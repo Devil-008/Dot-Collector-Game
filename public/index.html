@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Dot Collector</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Multiplayer Dot Collector</h1>
+        
+        <!-- Main Menu -->
+        <div id="mainMenu" class="menu">
+            <h2>Welcome to the Ultimate Dot Collector!</h2>
+            <div class="controls-info">
+                <strong>Game Rules:</strong><br>
+                • Collect red dots (1 point) and special yellow dots (10 points)<br>
+                • Yellow dots appear every 10 seconds<br>
+                • Game lasts 60 seconds - highest score wins!<br>
+                • Use WASD or Arrow Keys to move
+            </div>
+            <div>
+                <input type="text" id="playerName" placeholder="Enter your name" maxlength="20">
+            </div>
+            <div>
+                <button onclick="createRoom()">🏠 Create Room</button>
+                <button onclick="showJoinRoom()">🚪 Join Room</button>
+            </div>
+            
+            <div id="joinRoomDiv" style="display: none; margin-top: 20px;">
+                <input type="text" id="roomIdInput" placeholder="Enter Room ID" maxlength="6">
+                <button onclick="joinRoom()">Join</button>
+                <button onclick="hideJoinRoom()">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Game Lobby -->
+        <div id="gameLobby" class="menu" style="display: none;">
+            <div class="room-info">
+                <h3>🏠 Room: <span id="roomIdDisplay"></span></h3>
+                <p id="hostStatus"></p>
+            </div>
+            
+            <div class="players-list" id="playersList"></div>
+            
+            <div id="hostControls" style="display: none;">
+                <button id="startGameBtn" onclick="startGame()">🚀 Start Game</button>
+                <button onclick="endGame()" style="background: #f44336;">⏹️ End Game</button>
+            </div>
+            
+            <button onclick="leaveRoom()" style="background: #ff9800;">🚪 Leave Room</button>
+        </div>
+
+        <!-- Game Area -->
+        <div id="gameArea" class="game-area">
+            <div class="room-info">
+                <h3>🏠 Room: <span id="gameRoomId"></span></h3>
+                
+                <div class="game-info">
+                    <div class="timer" id="gameTimer">60</div>
+                    <div class="special-dot-info">
+                        ⭐ Next special dot in: <span id="specialDotTimer">10</span>s
+                    </div>
+                </div>
+
+                <div class="dot-legend">
+                    <div class="dot-legend-item">
+                        <div class="dot-sample normal"></div>
+                        <span>Normal Dot (1 point)</span>
+                    </div>
+                    <div class="dot-legend-item">
+                        <div class="dot-sample special"></div>
+                        <span>Special Dot (10 points)</span>
+                    </div>
+                </div>
+                
+                <div class="players-list" id="gamePlayersList"></div>
+            </div>
+            
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            
+            <div id="gameHostControls" style="display: none;">
+                <button onclick="endGame()" style="background: #f44336;">⏹️ End Game</button>
+            </div>
+            
+            <button onclick="leaveRoom()" style="background: #ff9800;">🚪 Leave Game</button>
+        </div>
+
+        <!-- Winner Modal -->
+        <div id="winnerModal" class="winner-modal">
+            <div class="winner-content">
+                <div class="winner-title">🏆</div>
+                <div class="winner-message" id="winnerMessage">
+                    <!-- Winner message goes here -->
+                </div>
+                <div class="final-scores" id="finalScores"></div>
+                <button onclick="closeWinnerModal()" style="background: #4CAF50; font-size: 18px;">
+                    🎮 Play Again
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages"></div>
+    </div>
+
+
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script src="client.js"></script>
+</html>
